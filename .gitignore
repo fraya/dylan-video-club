@@ -1,0 +1,6 @@
+*~
+_packages/
+_build
+registry
+tests/_build
+documentation/build
