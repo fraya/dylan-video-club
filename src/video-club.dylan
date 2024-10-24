@@ -41,7 +41,6 @@ define function statement
     format(stream, "Rental Record for %s\n", customer.customer-name);
     for (rental in customer.customer-rentals)
       let movie  = rental.rental-movie;
-      let amount = rental.rental-amount;
 
       // add frequent requent points
       inc!(frequent-renter-points, 1);
@@ -51,8 +50,8 @@ define function statement
       end if;
 
       // show figures for this rental
-      format(stream, "\t%30s\t%5d\n", movie.movie-title, amount);
-      inc!(total-amount, amount);
+      format(stream, "\t%30s\t%5d\n", movie.movie-title, rental.rental-amount);
+      inc!(total-amount, rental.rental-amount);
     end for;
 
     // add footer lines
