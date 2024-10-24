@@ -40,18 +40,18 @@ define function statement
   with-output-to-string (stream)
     format(stream, "Rental Record for %s\n", customer.customer-name);
     for (rental in customer.customer-rentals)
+      let movie  = rental.rental-movie;
       let amount = rental.rental-amount;
 
       // add frequent requent points
       inc!(frequent-renter-points, 1);
       // add bonus for a two day new release rental
-      if (rental.rental-movie.movie-price-code = $new-release
-	    & rental.rental-days-rented > 1)
+      if (movie.movie-price-code = $new-release & rental.rental-days-rented > 1)
 	inc!(frequent-renter-points, 1);
       end if;
 
       // show figures for this rental
-      format(stream, "\t%30s\t%5d\n", rental.rental-movie.movie-title, amount);
+      format(stream, "\t%30s\t%5d\n", movie.movie-title, amount);
       inc!(total-amount, amount);
     end for;
 
