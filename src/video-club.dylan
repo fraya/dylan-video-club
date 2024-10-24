@@ -45,8 +45,8 @@ define function statement
       inc!(frequent-renter-points, rental.rental-frequent-points);
 
       // show figures for this rental
-      format(stream, "\t%30s\t%5d\n", movie.movie-title, rental.rental-amount);
-      inc!(total-amount, rental.rental-amount);
+      format(stream, "\t%30s\t%5d\n", movie.movie-title, rental.rental-charge);
+      inc!(total-amount, rental.rental-charge);
     end for;
 
     // add footer lines
@@ -55,7 +55,7 @@ define function statement
   end with-output-to-string;
 end statement;
 
-define function rental-amount
+define function rental-charge
     (rental :: <rental>)
  => (amount :: <float>)
   let amount = 0.0;
