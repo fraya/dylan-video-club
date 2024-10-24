@@ -45,7 +45,12 @@ define module video-club-impl
   use common-dylan;
   use format;
   use streams;
-  use uncommon-utils;
+  
+  use uncommon-utils,
+    import: { inc! };
   
   use video-club;
+
+  export
+    amount-for;
 end module;

@@ -67,7 +67,7 @@ define function amount-for
   let this-amount = 0.0;
   select (rental.rental-movie.movie-price-code)
     $regular =>
-      this-amount := this-amount + 2;
+      inc!(this-amount, 2);
       if (rental.rental-days-rented > 2)
 	inc!(this-amount, (rental.rental-days-rented - 2) * 1.5);
       end if;
