@@ -2,10 +2,14 @@ Module: dylan-user
 
 define library video-club
   use common-dylan;
-  use io, import: { format,
-		    format-out,
-		    streams };
-
+  
+  use io,
+    import: { format,
+	      format-out,
+	      streams };
+  
+  use uncommon-dylan;
+  
   export
     video-club,
     video-club-impl;
@@ -41,5 +45,7 @@ define module video-club-impl
   use common-dylan;
   use format;
   use streams;
+  use uncommon-utils;
+  
   use video-club;
 end module;

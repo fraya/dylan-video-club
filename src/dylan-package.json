@@ -1,5 +1,7 @@
 {
-    "dependencies": [  ],
+    "dependencies": [
+	"uncommon-dylan@0.2"
+    ],
     "dev-dependencies": [ "testworks" ],
     "description": "YOUR DESCRIPTION HERE",
     "name": "video-club",

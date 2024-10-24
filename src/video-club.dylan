@@ -47,30 +47,30 @@ define function statement
 	$regular =>
 	  this-amount := this-amount + 2;
 	  if (rental.rental-days-rented > 2)
-	    this-amount := this-amount + ((rental.rental-days-rented - 2) * 1.5);
+	    inc!(this-amount, (rental.rental-days-rented - 2) * 1.5);
 	  end if;
 	$new-release =>
-	  this-amount := this-amount + (rental.rental-days-rented * 3);
+	  inc!(this-amount, rental.rental-days-rented * 3);
 	$childrens =>
-	  this-amount := this-amount + 1.5;
+	  inc!(this-amount, 1.5);
 	  if (rental.rental-days-rented > 3)
-	    this-amount := this-amount + ((rental.rental-days-rented - 3) * 1.5);
+	    inc!(this-amount, (rental.rental-days-rented - 3) * 1.5);
 	  end if;
 	otherwise =>
 	  error("Unknown movie price code");
       end select;
 
       // add frequent requent points
-      frequent-renter-points := frequent-renter-points + 1;
+      inc!(frequent-renter-points, 1);
       // add bonus for a two day new release rental
       if (rental.rental-movie.movie-price-code = $new-release
 	    & rental.rental-days-rented > 1)
-	frequent-renter-points := frequent-renter-points + 1;
+	inc!(frequent-renter-points, 1);
       end if;
 
       // show figures for this rental
       format(stream, "\t%30s\t%5d\n", rental.rental-movie.movie-title, this-amount);
-      total-amount := total-amount + this-amount;
+      inc!(total-amount, this-amount);
     end for;
 
     // add footer lines
