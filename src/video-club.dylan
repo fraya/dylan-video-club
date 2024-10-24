@@ -69,7 +69,7 @@ define function statement
       end if;
 
       // show figures for this rental
-      format(stream, "\t%s\t%d", rental.rental-movie.movie-title, this-amount);
+      format(stream, "\t%30s\t%5d\n", rental.rental-movie.movie-title, this-amount);
       total-amount := total-amount + this-amount;
     end for;
 
