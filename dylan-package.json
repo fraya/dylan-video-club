@@ -1,0 +1,14 @@
+{
+    "dependencies": [
+	"uncommon-dylan@0.2"
+    ],
+    "dev-dependencies": [ "testworks" ],
+    "description": "YOUR DESCRIPTION HERE",
+    "name": "video-club",
+    "version": "0.1.0",
+    "url": "https://github.com/YOUR-ORG-HERE/YOUR-REPO-HERE",
+    "keywords": [ ],
+    "contact": "",
+    "license": "",
+    "license-url": ""
+}
