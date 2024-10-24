@@ -42,12 +42,7 @@ define function statement
     for (rental in customer.customer-rentals)
       let movie  = rental.rental-movie;
 
-      // add frequent requent points
-      inc!(frequent-renter-points, 1);
-      // add bonus for a two day new release rental
-      if (movie.movie-price-code = $new-release & rental.rental-days-rented > 1)
-	inc!(frequent-renter-points, 1);
-      end if;
+      inc!(frequent-renter-points, rental.rental-frequent-points);
 
       // show figures for this rental
       format(stream, "\t%30s\t%5d\n", movie.movie-title, rental.rental-amount);
@@ -83,3 +78,13 @@ define function rental-amount
   amount
 end;
 
+define function rental-frequent-points
+    (rental :: <rental>)
+ => (points :: <integer>)
+  if (rental.rental-movie.movie-price-code = $new-release
+	& rental.rental-days-rented > 1)
+    2
+  else
+    1
+  end
+end;

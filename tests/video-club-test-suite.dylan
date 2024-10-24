@@ -42,5 +42,15 @@ define test test-amount-for-new-release-rental ()
   
 end test;
 
+define test test-frequent-rental-points ()
+  let m1 = make(<movie>, title: "Dune II", price-code: $new-release);
+  
+  let r1 = make(<rental>, movie: m1, days-rented: 1);
+  expect-equal(1, r1.rental-frequent-points);
+  
+  let r2 = make(<rental>, movie: m1, days-rented: 2);
+  expect-equal(2, r2.rental-frequent-points);
+end test;
+
 // Use `_build/bin/video-club-test-suite --help` to see options.
 run-test-application()
