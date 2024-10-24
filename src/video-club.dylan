@@ -40,25 +40,7 @@ define function statement
   with-output-to-string (stream)
     format(stream, "Rental Record for %s\n", customer.customer-name);
     for (rental in customer.customer-rentals)
-      let this-amount = 0.0;
-      
-      // determine amounts for each line
-      select (rental.rental-movie.movie-price-code)
-	$regular =>
-	  this-amount := this-amount + 2;
-	  if (rental.rental-days-rented > 2)
-	    inc!(this-amount, (rental.rental-days-rented - 2) * 1.5);
-	  end if;
-	$new-release =>
-	  inc!(this-amount, rental.rental-days-rented * 3);
-	$childrens =>
-	  inc!(this-amount, 1.5);
-	  if (rental.rental-days-rented > 3)
-	    inc!(this-amount, (rental.rental-days-rented - 3) * 1.5);
-	  end if;
-	otherwise =>
-	  error("Unknown movie price code");
-      end select;
+      let this-amount = amount-for(rental);
 
       // add frequent requent points
       inc!(frequent-renter-points, 1);
@@ -77,4 +59,28 @@ define function statement
     format(stream, "Amount owed is %d\n", total-amount);
     format(stream, "You earned %d frequent renter points", frequent-renter-points);
   end with-output-to-string;
-end;
+end statement;
+
+define function amount-for
+    (rental :: <rental>)
+ => (amount :: <float>)
+  let this-amount = 0.0;
+  select (rental.rental-movie.movie-price-code)
+    $regular =>
+      this-amount := this-amount + 2;
+      if (rental.rental-days-rented > 2)
+	inc!(this-amount, (rental.rental-days-rented - 2) * 1.5);
+      end if;
+    $new-release =>
+      inc!(this-amount, rental.rental-days-rented * 3);
+    $childrens =>
+      inc!(this-amount, 1.5);
+      if (rental.rental-days-rented > 3)
+	inc!(this-amount, (rental.rental-days-rented - 3) * 1.5);
+      end if;
+    otherwise =>
+      error("Unknown movie price code");
+  end select;
+  this-amount
+end amount-for;
+
