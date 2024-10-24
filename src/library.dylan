@@ -52,5 +52,5 @@ define module video-club-impl
   use video-club;
 
   export
-    amount-for;
+    rental-amount;
 end module;

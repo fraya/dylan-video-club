@@ -40,7 +40,7 @@ define function statement
   with-output-to-string (stream)
     format(stream, "Rental Record for %s\n", customer.customer-name);
     for (rental in customer.customer-rentals)
-      let this-amount = amount-for(rental);
+      let this-amount = rental.rental-amount;
 
       // add frequent requent points
       inc!(frequent-renter-points, 1);
@@ -61,7 +61,7 @@ define function statement
   end with-output-to-string;
 end statement;
 
-define function amount-for
+define function rental-amount
     (rental :: <rental>)
  => (amount :: <float>)
   let this-amount = 0.0;
@@ -82,5 +82,5 @@ define function amount-for
       error("Unknown movie price code");
   end select;
   this-amount
-end amount-for;
+end;
 
