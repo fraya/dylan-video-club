@@ -44,7 +44,7 @@ define function statement
 
     // add footer lines
     format(stream, "Amount owed is %d\n", customer.customer-charge);
-    format(stream, "You earned %d frequent renter points", customer.rental-frequent-renter-points);
+    format(stream, "You earned %d frequent renter points", customer.rental-frequent-points);
   end with-output-to-string;
 end statement;
 
@@ -83,14 +83,20 @@ define generic rental-frequent-points
   (object :: <object>) => (points :: <integer>);
 
 define method rental-frequent-points
-    (rental :: <rental>)
- => (points :: <integer>)
-  let movie = rental.rental-movie;
-  if (movie.movie-price-code = #"new-release" & rental.rental-days-rented > 1)
-    2
-  else
-    1
-  end
+    (rental :: <rental>) => (points :: <integer>)
+  let price-code  = rental.rental-movie.movie-price-code;
+  let days-rented = rental.rental-days-rented;
+  frequent-renter-points(price-code, days-rented)
+end;
+
+define method frequent-renter-points
+    (price-code :: <price-code>, days-rented :: <integer>) => (points :: <integer>)
+  1
+end;
+
+define method frequent-renter-points
+    (price-code == #"new-release", days-rented :: <integer>) => (points :: <integer>)
+  if (days-rented > 1) 2 else 1 end
 end;
 
 define function customer-charge
@@ -98,7 +104,7 @@ define function customer-charge
   reduce1(\+, map(rental-charge, customer.customer-rentals))
 end;
 
-define method rental-frequent-renter-points
+define method rental-frequent-points
     (customer :: <customer>) => (points :: <integer>)
   reduce1(\+, map(rental-frequent-points, customer.customer-rentals))
 end;

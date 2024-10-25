@@ -18,7 +18,7 @@ end library;
 define module video-club
 
   create
-    <price>;
+    <price-code>;
   
   create
     <movie>,
