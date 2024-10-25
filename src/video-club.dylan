@@ -1,15 +1,12 @@
 Module: video-club-impl
 
-define constant <price>
+define constant <price-code>
   = one-of(#"childrens", #"regular", #"new-release");
-
-define generic rental-charge
-  (object :: <object>) => (amount :: <float>);
 
 define class <movie> (<object>)
   constant slot movie-title :: <string>,
     required-init-keyword: title:;
-  slot movie-price-code :: <price>,
+  slot movie-price-code :: <price-code>,
     required-init-keyword: price-code:;
 end;
 
@@ -46,31 +43,39 @@ define function statement
     end for;
 
     // add footer lines
-    format(stream, "Amount owed is %d\n", customer.rental-charge);
+    format(stream, "Amount owed is %d\n", customer.customer-charge);
     format(stream, "You earned %d frequent renter points", customer.rental-frequent-renter-points);
   end with-output-to-string;
 end statement;
 
-define method rental-charge
-    (rental :: <rental>)
- => (amount :: <float>)
-  let amount = 0.0;
-  select (rental.rental-movie.movie-price-code)
-    #"regular" =>
-      inc!(amount, 2);
-      if (rental.rental-days-rented > 2)
-	inc!(amount, (rental.rental-days-rented - 2) * 1.5);
-      end if;
-    #"new-release" =>
-      inc!(amount, rental.rental-days-rented * 3);
-    #"childrens" =>
-      inc!(amount, 1.5);
-      if (rental.rental-days-rented > 3)
-	inc!(amount, (rental.rental-days-rented - 3) * 1.5);
-      end if;
-    otherwise =>
-      error("Unknown movie price code");
-  end select;
+define function rental-charge
+    (rental :: <rental>) => (amount :: <float>)
+  rental-charge-price(rental.rental-movie.movie-price-code, rental.rental-days-rented)
+end;
+
+define generic rental-charge-price
+  (price :: <price-code>, days-rented :: <integer>) => (amount :: <float>);
+
+define method rental-charge-price
+    (price == #"regular", days-rented :: <integer>) => (amount :: <float>)
+  let amount = 2.0;
+  if (days-rented > 2)
+    inc!(amount, (days-rented - 2) * 1.5)
+  end;
+  amount
+end;
+
+define method rental-charge-price
+    (price == #"new-release", days-rented :: <integer>) => (amount :: <float>)
+  days-rented * 3.0
+end;
+
+define method rental-charge-price
+    (price == #"childrens", days-rented :: <integer>) => (amount :: <float>)
+  let amount = 1.5;
+  if (days-rented > 3)
+    inc!(amount, (days-rented - 3) * 1.5)
+  end;
   amount
 end;
 
@@ -88,7 +93,7 @@ define method rental-frequent-points
   end
 end;
 
-define method rental-charge
+define function customer-charge
     (customer :: <customer>) => (amount :: <float>)
   reduce1(\+, map(rental-charge, customer.customer-rentals))
 end;
