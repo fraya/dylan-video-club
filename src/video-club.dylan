@@ -81,8 +81,8 @@ end;
 define function rental-frequent-points
     (rental :: <rental>)
  => (points :: <integer>)
-  if (rental.rental-movie.movie-price-code = $new-release
-	& rental.rental-days-rented > 1)
+  let movie = rental.rental-movie;
+  if (movie.movie-price-code = $new-release & rental.rental-days-rented > 1)
     2
   else
     1
