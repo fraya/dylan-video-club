@@ -35,7 +35,6 @@ end;
 define function statement
     (customer :: <customer>)
  => (result :: <string>)
-  let total-amount = 0.0;
   let frequent-renter-points = 0;
   with-output-to-string (stream)
     format(stream, "Rental Record for %s\n", customer.customer-name);
@@ -46,11 +45,10 @@ define function statement
 
       // show figures for this rental
       format(stream, "\t%30s\t%5d\n", movie.movie-title, rental.rental-charge);
-      inc!(total-amount, rental.rental-charge);
     end for;
 
     // add footer lines
-    format(stream, "Amount owed is %d\n", total-amount);
+    format(stream, "Amount owed is %d\n", customer.customer-charge);
     format(stream, "You earned %d frequent renter points", frequent-renter-points);
   end with-output-to-string;
 end statement;
@@ -87,4 +85,9 @@ define function rental-frequent-points
   else
     1
   end
+end;
+
+define function customer-charge
+    (customer :: <customer>) => (amount :: <float>)
+  reduce1(\+, map(rental-charge, customer.customer-rentals))
 end;
