@@ -40,16 +40,13 @@ define function statement
     format(stream, "Rental Record for %s\n", customer.customer-name);
     for (rental in customer.customer-rentals)
       let movie  = rental.rental-movie;
-
-      inc!(frequent-renter-points, rental.rental-frequent-points);
-
       // show figures for this rental
       format(stream, "\t%30s\t%5d\n", movie.movie-title, rental.rental-charge);
     end for;
 
     // add footer lines
     format(stream, "Amount owed is %d\n", customer.customer-charge);
-    format(stream, "You earned %d frequent renter points", frequent-renter-points);
+    format(stream, "You earned %d frequent renter points", customer.customer-frequent-renter-points);
   end with-output-to-string;
 end statement;
 
@@ -90,4 +87,9 @@ end;
 define function customer-charge
     (customer :: <customer>) => (amount :: <float>)
   reduce1(\+, map(rental-charge, customer.customer-rentals))
+end;
+
+define function customer-frequent-renter-points
+    (customer :: <customer>) => (points :: <integer>)
+  reduce1(\+, map(rental-frequent-points, customer.customer-rentals))
 end;
