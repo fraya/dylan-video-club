@@ -30,5 +30,5 @@ end;
 define method renter-points
     (customer :: <customer>)
  => (points :: <renter-points>)
-  reduce(\+, 0, map(renter-points, customer.customer-rentals))
+  reduce(\+, 0, map-as(<vector>, renter-points, customer.customer-rentals))
 end;

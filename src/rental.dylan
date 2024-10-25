@@ -10,4 +10,5 @@ define class <rental> (<object>)
     init-keyword: days-rented:;
 end;
 
-define constant <rentals> = <vector>;
+define constant <rentals> =
+  limited(<vector>, of: <rental>);
