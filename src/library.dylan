@@ -18,12 +18,11 @@ end library;
 define module video-club
 
   create
-    <price-code>;
-  
-  create
     <movie>,
-    movie-title,
-    movie-price-code, movie-price-code-setter;
+    <childrens-movie>,
+    <regular-movie>,
+    <new-release-movie>,
+    movie-title;
 
   create
     <rental>,
@@ -42,6 +41,7 @@ end module;
 define module video-club-impl
   use common-dylan;
   use format;
+  use format-out;
   use streams;
   
   use uncommon-utils,
@@ -51,5 +51,5 @@ define module video-club-impl
 
   export
     rental-charge,
-    rental-frequent-points;
+    renter-points;
 end module;
