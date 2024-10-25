@@ -18,9 +18,7 @@ end library;
 define module video-club
 
   create
-    $childrens,
-    $regular,
-    $new-release;
+    <price>;
   
   create
     <movie>,

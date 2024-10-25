@@ -1,8 +1,7 @@
 Module: video-club-impl
 
-define constant $childrens = 2;
-define constant $regular = 0;
-define constant $new-release = 1;
+define constant <price>
+  = one-of(#"childrens", #"regular", #"new-release");
 
 define generic rental-charge
   (object :: <object>) => (amount :: <float>);
@@ -10,7 +9,7 @@ define generic rental-charge
 define class <movie> (<object>)
   constant slot movie-title :: <string>,
     required-init-keyword: title:;
-  slot movie-price-code :: <integer>,
+  slot movie-price-code :: <price>,
     required-init-keyword: price-code:;
 end;
 
@@ -57,14 +56,14 @@ define method rental-charge
  => (amount :: <float>)
   let amount = 0.0;
   select (rental.rental-movie.movie-price-code)
-    $regular =>
+    #"regular" =>
       inc!(amount, 2);
       if (rental.rental-days-rented > 2)
 	inc!(amount, (rental.rental-days-rented - 2) * 1.5);
       end if;
-    $new-release =>
+    #"new-release" =>
       inc!(amount, rental.rental-days-rented * 3);
-    $childrens =>
+    #"childrens" =>
       inc!(amount, 1.5);
       if (rental.rental-days-rented > 3)
 	inc!(amount, (rental.rental-days-rented - 3) * 1.5);
@@ -82,7 +81,7 @@ define method rental-frequent-points
     (rental :: <rental>)
  => (points :: <integer>)
   let movie = rental.rental-movie;
-  if (movie.movie-price-code = $new-release & rental.rental-days-rented > 1)
+  if (movie.movie-price-code = #"new-release" & rental.rental-days-rented > 1)
     2
   else
     1

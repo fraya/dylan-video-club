@@ -2,7 +2,7 @@ Module: video-club-test-suite
 
 define test test-amount-for-children-rental ()
   
-  let m1 = make(<movie>, title: "Snow white", price-code: $childrens);
+  let m1 = make(<movie>, title: "Snow white", price-code: #"childrens");
   
   let r1 = make(<rental>, movie: m1, days-rented: 1);
   expect-equal(1.5, r1.rental-charge);
@@ -17,7 +17,7 @@ end test;
 
 define test test-amount-for-regular-rental ()
   
-  let m1 = make(<movie>, title: "LOTR II", price-code: $regular);
+  let m1 = make(<movie>, title: "LOTR II", price-code: #"regular");
   
   let r1 = make(<rental>, movie: m1, days-rented: 1);
   expect-equal(2.0, r1.rental-charge);
@@ -32,7 +32,7 @@ end test;
 
 define test test-amount-for-new-release-rental ()
   
-  let m1 = make(<movie>, title: "Dune II", price-code: $new-release);
+  let m1 = make(<movie>, title: "Dune II", price-code: #"new-release");
   
   let r1 = make(<rental>, movie: m1, days-rented: 1);
   expect-equal(3.0, r1.rental-charge);
@@ -43,7 +43,7 @@ define test test-amount-for-new-release-rental ()
 end test;
 
 define test test-frequent-rental-points ()
-  let m1 = make(<movie>, title: "Dune II", price-code: $new-release);
+  let m1 = make(<movie>, title: "Dune II", price-code: #"new-release");
   
   let r1 = make(<rental>, movie: m1, days-rented: 1);
   expect-equal(1, r1.rental-frequent-points);
