@@ -30,9 +30,5 @@ end;
 define method renter-points
     (customer :: <customer>)
  => (points :: <renter-points>)
-  let points = 0;
-  for (rental in customer.customer-rentals)
-    inc!(points, rental.renter-points)
-  end;
-  points
+  reduce(\+, 0, map(renter-points, customer.customer-rentals))
 end;

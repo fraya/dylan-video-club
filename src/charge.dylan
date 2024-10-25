@@ -36,9 +36,5 @@ end;
 
 define function customer-charge
     (customer :: <customer>) => (amount :: <float>)
-  let amount = 0.0;
-  for (rental in customer.customer-rentals)
-    inc!(amount, rental.rental-charge)
-  end;
-  amount
+  reduce(\+, 0.0, map(rental-charge, customer.customer-rentals))
 end;
