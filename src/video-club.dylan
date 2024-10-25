@@ -46,7 +46,7 @@ define function statement
 
     // add footer lines
     format(stream, "Amount owed is %d\n", customer.customer-charge);
-    format(stream, "You earned %d frequent renter points", customer.customer-frequent-renter-points);
+    format(stream, "You earned %d frequent renter points", customer.rental-frequent-renter-points);
   end with-output-to-string;
 end statement;
 
@@ -73,7 +73,10 @@ define function rental-charge
   amount
 end;
 
-define function rental-frequent-points
+define generic rental-frequent-points
+  (object :: <object>) => (points :: <integer>);
+
+define method rental-frequent-points
     (rental :: <rental>)
  => (points :: <integer>)
   let movie = rental.rental-movie;
@@ -89,7 +92,7 @@ define function customer-charge
   reduce1(\+, map(rental-charge, customer.customer-rentals))
 end;
 
-define function customer-frequent-renter-points
+define method rental-frequent-renter-points
     (customer :: <customer>) => (points :: <integer>)
   reduce1(\+, map(rental-frequent-points, customer.customer-rentals))
 end;
