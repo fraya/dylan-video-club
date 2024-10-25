@@ -4,6 +4,9 @@ define constant $childrens = 2;
 define constant $regular = 0;
 define constant $new-release = 1;
 
+define generic rental-charge
+  (object :: <object>) => (amount :: <float>);
+
 define class <movie> (<object>)
   constant slot movie-title :: <string>,
     required-init-keyword: title:;
@@ -45,12 +48,12 @@ define function statement
     end for;
 
     // add footer lines
-    format(stream, "Amount owed is %d\n", customer.customer-charge);
+    format(stream, "Amount owed is %d\n", customer.rental-charge);
     format(stream, "You earned %d frequent renter points", customer.rental-frequent-renter-points);
   end with-output-to-string;
 end statement;
 
-define function rental-charge
+define method rental-charge
     (rental :: <rental>)
  => (amount :: <float>)
   let amount = 0.0;
@@ -87,7 +90,7 @@ define method rental-frequent-points
   end
 end;
 
-define function customer-charge
+define method rental-charge
     (customer :: <customer>) => (amount :: <float>)
   reduce1(\+, map(rental-charge, customer.customer-rentals))
 end;
