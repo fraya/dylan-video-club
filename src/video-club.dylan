@@ -38,7 +38,6 @@ end;
 define function statement
     (customer :: <customer>)
  => (result :: <string>)
-  let frequent-renter-points = 0;
   with-output-to-string (stream)
     format(stream, "Rental Record for %s\n", customer.customer-name);
     for (rental in customer.customer-rentals)
