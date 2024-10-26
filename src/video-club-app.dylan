@@ -2,9 +2,9 @@ Module: video-club-app
 
 define function main
     (name :: <string>, arguments :: <vector>)
-  let v1 = make(<childrens-movie>, title: "Snowwhite");
-  let v2 = make(<regular-movie>, title: "LOTR II");
-  let v3 = make(<new-release-movie>, title: "Dune III");
+  let v1 = make(<movie>, title: "Snow white", category: #"childrens");
+  let v2 = make(<movie>, title: "LOTR II", category: #"regular");
+  let v3 = make(<movie>, title: "Dune III", category: #"new-release");
 
   let c1 = make(<customer>, name: "Juan");
   add-rental!(c1, make(<rental>, movie: v1));

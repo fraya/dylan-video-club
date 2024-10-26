@@ -18,16 +18,16 @@ end library;
 define module video-club
 
   create
+    <category>;
+  
+  create
     <movie>,
-    <childrens-movie>,
-    <regular-movie>,
-    <new-release-movie>,
     movie-title;
 
   create
     <rental>,
     rental-movie, 
-    rental-days-rented; 
+    rental-rented; 
 
   create
     <customer>,
