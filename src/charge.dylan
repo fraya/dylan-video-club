@@ -3,12 +3,11 @@ Module: video-club-impl
 define constant <money>
   = <float>;
 
-define generic charge
-  (object :: <object>, rented :: <days>) => (amount :: <money>);
+define generic charge-by-category-and-days
+    (cat :: <category>, rented :: <days>) => (amount :: <money>);
 
-define method charge
-    (cat == #"regular", rented :: <days>) 
- => (amount :: <float>)
+define method charge-by-category-and-days
+    (cat == #"regular", rented :: <days>) => (amount :: <money>)
   let amount = 2.0;
   if (rented > 2)
     inc!(amount, (rented - 2) * 1.5)
@@ -16,15 +15,13 @@ define method charge
   amount
 end;
 
-define method charge
-    (cat == #"new-release", rented :: <days>) 
- => (amount :: <float>)
+define method charge-by-category-and-days
+    (cat == #"new-release", rented :: <days>) => (amount :: <money>)
   rented * 3.0
 end;
 
-define method charge
-    (cat == #"childrens", rented :: <days>) 
- => (amount :: <float>)
+define method charge-by-category-and-days
+    (cat == #"childrens", rented :: <days>) => (amount :: <money>)
   let amount = 1.5;
   if (rented > 3)
     inc!(amount, (rented - 3) * 1.5)
@@ -32,18 +29,20 @@ define method charge
   amount
 end;
 
+define method charge-by-movie-and-days
+    (movie :: <movie>, rented :: <days>) => (amount :: <money>)
+  charge-by-category-and-days(movie.movie-category, rented)
+end;
+
+define generic charge
+    (object :: <object>) => (amount :: <money>);
+
 define method charge
-    (movie :: <movie>, rented :: <days>)
- => (amount :: <money>)
-  charge(movie.movie-category, rented)
-end;
-
-define function rental-charge
     (rental :: <rental>) => (amount :: <money>)
-  charge(rental.rental-movie, rental.rental-rented)
+  charge-by-movie-and-days(rental.rental-movie, rental.rental-rented)
 end;
 
-define function customer-charge
+define method charge
     (customer :: <customer>) => (amount :: <money>)
-  reduce(\+, 0.0, map-as(<vector>, rental-charge, customer.customer-rentals))
+  reduce(\+, 0.0, map-as(<vector>, charge, customer.customer-rentals))
 end;

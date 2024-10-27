@@ -41,6 +41,9 @@ define module video-club
     <html-statement>,
     print-statement;
     
+  create
+    charge;
+
 end module;
 
 define module video-club-impl
@@ -55,6 +58,7 @@ define module video-club-impl
   use video-club;
 
   export
-    rental-charge,
+    charge-by-movie-and-days,
+    charge-by-category-and-days,
     renter-points;
 end module;

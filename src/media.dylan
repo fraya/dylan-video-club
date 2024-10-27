@@ -18,10 +18,10 @@ define method print-statement
   format(stream, "Rental Record for %s\n", customer.customer-name);
   for (rental in customer.customer-rentals)
     let title  = rental.rental-movie.movie-title;
-    let charge = rental.rental-charge;
+    let charge = rental.charge;
     format(stream, "\t%20s\t%5d\n", title, charge);
   end;
-  format(stream, "Amount owed is %d\n", customer.customer-charge);
+  format(stream, "Amount owed is %d\n", customer.charge);
   format(stream, "You earned %d frequent renter points", customer.renter-points); 
 end;
 
@@ -40,7 +40,7 @@ define method print-statement
   format(stream, "<table>\n");
   for (rental in customer.customer-rentals)
     let title  = rental.rental-movie.movie-title;
-    let charge = rental.rental-charge;
+    let charge = rental.charge;
     format(stream, 
     """
     <hr>
@@ -56,6 +56,6 @@ define method print-statement
   <p> You earned %d frequent renter points </p>
   </body>
   </html>
-  """, customer.customer-charge, 
+  """, customer.charge, 
        customer.renter-points);
  end;
