@@ -11,7 +11,8 @@ define function main
   add-rental!(c1, make(<rental>, movie: v2));
   add-rental!(c1, make(<rental>, movie: v3));
 
-  format-out("%s\n", c1.statement);
+  let statement = make(<html-statement>, customer: c1);
+  print-statement(statement, *standard-output*);
   exit-application(0);
 end function;
 

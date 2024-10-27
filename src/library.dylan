@@ -33,8 +33,13 @@ define module video-club
     <customer>,
     customer-name,
     customer-rentals,
-    add-rental!,
-    statement;
+    add-rental!;
+
+  create
+    <statement>,
+    <text-statement>,
+    <html-statement>,
+    print-statement;
     
 end module;
 
