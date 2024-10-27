@@ -1,10 +1,10 @@
 Module: video-club-impl
 
-define constant <money-charge>
+define constant <money>
   = <float>;
 
 define generic charge
-  (object :: <object>, rented :: <days>) => (amount :: <money-charge>);
+  (object :: <object>, rented :: <days>) => (amount :: <money>);
 
 define method charge
     (cat == #"regular", rented :: <days>) 
@@ -34,16 +34,16 @@ end;
 
 define method charge
     (movie :: <movie>, rented :: <days>)
- => (amount :: <money-charge>)
+ => (amount :: <money>)
   charge(movie.movie-category, rented)
 end;
 
 define function rental-charge
-    (rental :: <rental>) => (amount :: <money-charge>)
+    (rental :: <rental>) => (amount :: <money>)
   charge(rental.rental-movie, rental.rental-rented)
 end;
 
 define function customer-charge
-    (customer :: <customer>) => (amount :: <money-charge>)
+    (customer :: <customer>) => (amount :: <money>)
   reduce(\+, 0.0, map-as(<vector>, rental-charge, customer.customer-rentals))
 end;
